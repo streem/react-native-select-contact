@@ -1,4 +1,6 @@
-# react-native-contacts-wrapper
+# react-native-select-contact
+
+Originally branched from [react-native-contacts-wrapper](https://github.com/LynxITDigital/react-native-contacts-wrapper)
 
 ![alt tag](https://github.com/LynxITDigital/Screenshots/blob/master/RN%20Contacts%20Wrapper%20example.gif)
 
@@ -12,77 +14,10 @@ Feel free to extend the functionality so it's more useful for everyone - all PRs
 
 ## Installation
 
-### Automatic (works for iOS without condition; for Android with RN 0.28 and before)
-
-If you have rnpm installed, all you need to do is
-
 ```
-npm install react-native-contacts-wrapper --save
-rnpm link react-native-contacts-wrapper
+yarn add react-native-contacts-wrapper
+./node_modules/.bin/react-native link react-native-contacts-wrapper
 ```
-
-### Manual
-
-#### Android (with RN 0.29 and above)
-in `settings.gradle`
-
-```
-include ':react-native-contacts-wrapper'
-project(':react-native-contacts-wrapper').projectDir = new File(settingsDir, '../node_modules/react-native-contacts-wrapper/android/app')
-```
-
-in `android/app/build.gradle`
-
-```
-dependencies {
-    compile project(':react-native-contacts-wrapper')
-```
-
-in `MainApplication.java`
-add package to getPacakges()
-
-```
-import com.lynxit.contactswrapper.ContactsWrapperPackage;
-...
-
-@Override
-protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        ...,
-       new ContactsWrapperPackage()
-   );
-}
-```
-
-in `AndroidManifest.xml`
-make sure you have the following setting even if you have done `react-native upgrade`
-```
-<application
-     android:name=".MainApplication"
-
-```
-
-Also add 
-
-```
-<uses-permission android:name="android.permission.READ_CONTACTS" />
-```
-
-
-#### iOS
-
-1. Open your xCode project
-2. Click project name in project navigator
-3. Select the main target in the left hand menu
-4. Scroll to Linked Frameworks and Libraries
-5. click + at bottom
-6. Click ‘Add Other'
-7. Find and add your new project’s .xcodeproj file from node_modules
-8. This will now appear in project explorer, drag in under the Libraries group.
-9. In same screen, click + again, you should now see the .a file for you project, Add this
-10. Clean and Rebuild your Xcode project
-
 
 ##API
 
@@ -98,6 +33,8 @@ Prevent methods from being called multiple times (on Android).
 ###Example
 
 An example project can be found in this repo: https://github.com/LynxITDigital/react-native-contacts-wrapper-example/tree/master
+
+TODO: Update example:
 
 ```
 import ContactsWrapper from 'react-native-contacts-wrapper';
