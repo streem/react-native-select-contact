@@ -1,0 +1,32 @@
+{
+  "name": "react-native-contacts-wrapper",
+  "version": "0.2.4",
+  "nativePackage": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LynxITDigital/react-native-contacts-wrapper.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "contacts",
+    "address book",
+    "people"
+  ],
+  "author": {
+    "name": "LynxIT Digital"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LynxITDigital/react-native-contacts-wrapper/issues"
+  },
+  "homepage": "https://github.com/LynxITDigital/react-native-contacts-wrapper",
+  "maintainers": [
+    {
+      "name": "Oliver Jacobs"
+    }
+  ]
+}
