@@ -10,6 +10,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Contacts.Entity;
+import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -22,6 +23,7 @@ import com.facebook.react.bridge.WritableMap;
 
 public class SelectContactModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
+    private static final String TAG = "SelectContactModule";
     private static final int CONTACT_REQUEST = 11112;
     public static final String E_CONTACT_CANCELLED = "E_CONTACT_CANCELLED";
     public static final String E_CONTACT_NO_DATA = "E_CONTACT_NO_DATA";
@@ -89,6 +91,9 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
             Uri contactUri = buildContactUri(id);
             boolean foundData = false;
 
+            WritableArray phones = Arguments.createArray();
+            WritableArray emails = Arguments.createArray();
+
             Cursor cursor = openContactQuery(contactUri);
             if (cursor.moveToFirst()) {
                 do {
@@ -100,12 +105,12 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
                             break;
 
                         case Phone.CONTENT_ITEM_TYPE:
-                            addPhoneData(contactData, cursor, activity);
+                            addPhoneEntry(phones, cursor, activity);
                             foundData = true;
                             break;
 
                         case Email.CONTENT_ITEM_TYPE:
-                            addEmailData(contactData, cursor, activity);
+                            addEmailEntry(emails, cursor, activity);
                             foundData = true;
                             break;
                     }
@@ -113,12 +118,18 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
             }
             cursor.close();
 
+            contactData.putArray("phones", phones);
+            contactData.putArray("emails", emails);
+
             if (foundData) {
                 mContactsPromise.resolve(contactData);
             } else {
                 mContactsPromise.reject(E_CONTACT_NO_DATA, "No data found for contact");
             }
+        } catch (SelectContactException e) {
+            mContactsPromise.reject(E_CONTACT_EXCEPTION, e.getMessage());
         } catch (Exception e) {
+            Log.e(TAG, "Unexpected exception reading from contacts", e);
             mContactsPromise.reject(E_CONTACT_EXCEPTION, e.getMessage());
         }
     }
@@ -161,7 +172,7 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
         contactData.putString("name", cursor.getString(displayNameIndex));
     }
 
-    private void addPhoneData(WritableMap contactData, Cursor cursor, Activity activity) {
+    private void addPhoneEntry(WritableArray phones, Cursor cursor, Activity activity) {
         String phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
         int phoneType = cursor.getInt(cursor.getColumnIndex(Phone.TYPE));
         String phoneLabel = cursor.getString(cursor.getColumnIndex(Phone.LABEL));
@@ -171,15 +182,10 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
         phoneEntry.putString("number", phoneNumber);
         phoneEntry.putString("type", String.valueOf(typeLabel));
 
-        if (!contactData.hasKey("phones")) {
-            contactData.putArray("phones", Arguments.createArray());
-        }
-
-        WritableArray phoneNumbers = (WritableArray) contactData.getArray("phones");
-        phoneNumbers.pushMap(phoneEntry);
+        phones.pushMap(phoneEntry);
     }
 
-    private void addEmailData(WritableMap contactData, Cursor cursor, Activity activity) {
+    private void addEmailEntry(WritableArray emails, Cursor cursor, Activity activity) {
         String emailAddress = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
         int emailType = cursor.getInt(cursor.getColumnIndex(Email.TYPE));
         String emailLabel = cursor.getString(cursor.getColumnIndex(Email.LABEL));
@@ -189,11 +195,6 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
         emailEntry.putString("address", emailAddress);
         emailEntry.putString("type", String.valueOf(typeLabel));
 
-        if (!contactData.hasKey("emails")) {
-            contactData.putArray("emails", Arguments.createArray());
-        }
-
-        WritableArray emails = (WritableArray) contactData.getArray("emails");
         emails.pushMap(emailEntry);
     }
 
