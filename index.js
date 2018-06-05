@@ -1,24 +1,60 @@
 'use strict';
 
 import {
+    Alert,
+    ActionSheetIOS,
     NativeModules,
     Platform
 } from 'react-native';
-import ActionSheet from '@yfuks/react-native-action-sheet';
 
-const { SelectContact } = NativeModules;
+const { SelectContact, ActionSheetAndroid } = NativeModules;
+const ActionSheet = Platform.select({
+    ios: ActionSheetIOS,
+    android: ActionSheetAndroid
+});
 
+let currentlyOpen = false;
 
-module.exports = {
+const SelectContactApi = {
 
     selectContact() {
-        return SelectContact.openContactSelection();
+        if (currentlyOpen) {
+            return Promise.reject(new Error('Cannot open the contact selector twice'));
+        }
+
+        currentlyOpen = true;
+
+        return SelectContact.openContactSelection()
+            .then(contact => {
+                currentlyOpen = false;
+                return contact;
+            })
+            .catch(err => {
+                currentlyOpen = false;
+
+                // Resolve to null when cancelled
+                if (err.code === 'E_CONTACT_CANCELLED') {
+                    return null;
+                }
+
+                throw err;
+            });
     },
 
     selectContactPhone() {
-        return SelectContact.openContactSelection()
+        return SelectContactApi.selectContact()
             .then(contact => {
-                return selectPhone(contact)
+                if (!contact) {
+                    return null;
+                }
+
+                let phones = contact && contact.phones || [];
+                if (phones.length === 0) {
+                    Alert.alert('No Phone Numbers', `We could not find any phone numbers for ${contact.name}`);
+                    return null;
+                }
+
+                return selectPhone(phones)
                     .then(selectedPhone => {
                         return selectedPhone ? { contact, selectedPhone } : null;
                     });
@@ -26,9 +62,19 @@ module.exports = {
     },
 
     selectContactEmail() {
-        return SelectContact.openContactSelection()
+        return SelectContactApi.selectContact()
             .then(contact => {
-                return selectEmail(contact)
+                if (!contact) {
+                    return null;
+                }
+
+                let emails = contact && contact.emails || [];
+                if (emails.length === 0) {
+                    Alert.alert('No Email Addresses', `We could not find any email addresses for ${contact.name}`);
+                    return null;
+                }
+
+                return selectEmail(emails)
                     .then(selectedEmail => {
                         return selectedEmail ? { contact, selectedEmail } : null;
                     });
@@ -37,9 +83,11 @@ module.exports = {
 
 };
 
-function selectPhone(contact) {
-    let phones = contact && contact.phones || [];
-    if (phones.length < 2) {
+module.exports = SelectContactApi;
+
+
+function selectPhone(phones) {
+    if (phones.length < 2 || !ActionSheet) {
         return Promise.resolve(phones[0]);
     }
 
@@ -65,9 +113,8 @@ function selectPhone(contact) {
     }));
 }
 
-function selectEmail(contact) {
-    let emails = contact && contact.emails || [];
-    if (emails.length < 2) {
+function selectEmail(emails) {
+    if (emails.length < 2 || !ActionSheet) {
         return Promise.resolve(emails[0]);
     }
 

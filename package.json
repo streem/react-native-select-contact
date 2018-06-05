@@ -31,10 +31,12 @@
     }
   ],
   "peerDependencies": {
-    "@yfuks/react-native-action-sheet": "0.0.x",
     "react-native": "^0.51.0"
   },
   "devDependencies": {
     "react-native": "^0.51.0"
+  },
+  "optionalDependencies": {
+    "@yfuks/react-native-action-sheet": "^0.0.4"
   }
 }

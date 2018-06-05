@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@yfuks/react-native-action-sheet@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@yfuks/react-native-action-sheet/-/react-native-action-sheet-0.0.4.tgz#8388b83696d750885b286f75376b2e61fe072b79"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
