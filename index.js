@@ -2,7 +2,6 @@
 
 import {
     NativeModules,
-    NativeEventEmitter,
     Platform
 } from 'react-native';
 import ActionSheet from '@yfuks/react-native-action-sheet';
@@ -12,9 +11,28 @@ const { SelectContact } = NativeModules;
 
 module.exports = {
 
+    selectContact() {
+        return SelectContact.openContactSelection();
+    },
+
     selectContactPhone() {
         return SelectContact.openContactSelection()
-            .then(contact => selectPhone(contact));
+            .then(contact => {
+                return selectPhone(contact)
+                    .then(selectedPhone => {
+                        return selectedPhone ? { contact, selectedPhone } : null;
+                    });
+            });
+    },
+
+    selectContactEmail() {
+        return SelectContact.openContactSelection()
+            .then(contact => {
+                return selectEmail(contact)
+                    .then(selectedEmail => {
+                        return selectedEmail ? { contact, selectedEmail } : null;
+                    });
+            });
     }
 
 };
@@ -22,7 +40,7 @@ module.exports = {
 function selectPhone(contact) {
     let phones = contact && contact.phones || [];
     if (phones.length < 2) {
-        return phones[0] || null;
+        return Promise.resolve(phones[0]);
     }
 
     let options = phones.map(phone => {
@@ -42,9 +60,35 @@ function selectPhone(contact) {
                 tintColor: 'blue'
             },
             (buttonIndex) => {
-                let selected = phones[buttonIndex];
-                let selectedPhone = selected && selected.number;
-                resolve(selectedPhone ? { contact, selectedPhone } : null);
+                resolve(phones[buttonIndex]);
+            });
+    }));
+}
+
+function selectEmail(contact) {
+    let emails = contact && contact.emails || [];
+    if (emails.length < 2) {
+        return Promise.resolve(emails[0]);
+    }
+
+    let options = emails.map(email => {
+        let { address, type } = email;
+        return address + (type ? ` - ${type}` : '');
+    });
+
+    if (Platform.OS === 'ios') {
+        options.push('Cancel');
+    }
+
+    return new Promise(((resolve) => {
+        ActionSheet.showActionSheetWithOptions({
+                title: 'Select Email',
+                options: options,
+                cancelButtonIndex: options.length - 1,
+                tintColor: 'blue'
+            },
+            (buttonIndex) => {
+                resolve(emails[buttonIndex]);
             });
     }));
 }
