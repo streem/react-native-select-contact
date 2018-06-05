@@ -1,6 +1,6 @@
 {
   "name": "react-native-select-contact",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "nativePackage": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
