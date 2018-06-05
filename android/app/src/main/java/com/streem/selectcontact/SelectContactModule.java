@@ -1,4 +1,4 @@
-package com.lynxit.contactswrapper;
+package com.streem.selectcontact;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -20,7 +20,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
-public class ContactsWrapper extends ReactContextBaseJavaModule implements ActivityEventListener {
+public class SelectContactModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private static final int CONTACT_REQUEST = 11112;
     public static final String E_CONTACT_CANCELLED = "E_CONTACT_CANCELLED";
@@ -30,7 +30,7 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
     private Promise mContactsPromise;
     private final ContentResolver contentResolver;
 
-    public ContactsWrapper(ReactApplicationContext reactContext) {
+    public SelectContactModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.contentResolver = getReactApplicationContext().getContentResolver();
         reactContext.addActivityEventListener(this);
