@@ -2,6 +2,7 @@
   "name": "react-native-select-contact",
   "version": "0.0.11",
   "nativePackage": true,
+  "typings": "./selectContact.d.ts",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
