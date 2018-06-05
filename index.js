@@ -22,7 +22,7 @@ module.exports = {
 function selectPhone(contact) {
     let phones = contact && contact.phones || [];
     if (phones.length < 2) {
-        return phones[0];
+        return phones[0] || null;
     }
 
     let options = phones.map(phone => {
@@ -36,14 +36,15 @@ function selectPhone(contact) {
 
     return new Promise(((resolve) => {
         ActionSheet.showActionSheetWithOptions({
+                title: 'Select Phone',
                 options: options,
                 cancelButtonIndex: options.length - 1,
                 tintColor: 'blue'
             },
             (buttonIndex) => {
                 let selected = phones[buttonIndex];
-                let phone = selected && selected.number || null;
-                resolve({ contact, phone });
+                let selectedPhone = selected && selected.number;
+                resolve(selectedPhone ? { contact, selectedPhone } : null);
             });
     }));
 }
