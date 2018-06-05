@@ -162,12 +162,6 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
     }
 
     private void addPhoneData(WritableMap contactData, Cursor cursor, Activity activity) {
-        WritableArray phoneNumbers = (WritableArray) contactData.getArray("phones");
-        if (phoneNumbers == null) {
-            phoneNumbers = Arguments.createArray();
-            contactData.putArray("phones", phoneNumbers);
-        }
-
         String phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
         int phoneType = cursor.getInt(cursor.getColumnIndex(Phone.TYPE));
         String phoneLabel = cursor.getString(cursor.getColumnIndex(Phone.LABEL));
@@ -177,16 +171,15 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
         phoneEntry.putString("number", phoneNumber);
         phoneEntry.putString("type", String.valueOf(typeLabel));
 
+        if (!contactData.hasKey("phones")) {
+            contactData.putArray("phones", Arguments.createArray());
+        }
+
+        WritableArray phoneNumbers = (WritableArray) contactData.getArray("phones");
         phoneNumbers.pushMap(phoneEntry);
     }
 
     private void addEmailData(WritableMap contactData, Cursor cursor, Activity activity) {
-        WritableArray emails = (WritableArray) contactData.getArray("emails");
-        if (emails == null) {
-            emails = Arguments.createArray();
-            contactData.putArray("emails", emails);
-        }
-
         String emailAddress = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
         int emailType = cursor.getInt(cursor.getColumnIndex(Email.TYPE));
         String emailLabel = cursor.getString(cursor.getColumnIndex(Email.LABEL));
@@ -196,6 +189,11 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
         emailEntry.putString("address", emailAddress);
         emailEntry.putString("type", String.valueOf(typeLabel));
 
+        if (!contactData.hasKey("emails")) {
+            contactData.putArray("emails", Arguments.createArray());
+        }
+
+        WritableArray emails = (WritableArray) contactData.getArray("emails");
         emails.pushMap(emailEntry);
     }
 
