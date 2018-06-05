@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B58405D1D10DE8700235F31 /* RCTContactsWrapper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2B58405C1D10DE8700235F31 /* RCTContactsWrapper.h */; };
-		2B58405F1D10DE8700235F31 /* RCTContactsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B58405E1D10DE8700235F31 /* RCTContactsWrapper.m */; };
+		2B58405D1D10DE8700235F31 /* RCTSelectContact.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2B58405C1D10DE8700235F31 /* RCTSelectContact.h */; };
+		2B58405F1D10DE8700235F31 /* RCTSelectContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B58405E1D10DE8700235F31 /* RCTSelectContact.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +18,16 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				2B58405D1D10DE8700235F31 /* RCTContactsWrapper.h in CopyFiles */,
+				2B58405D1D10DE8700235F31 /* RCTSelectContact.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2B58405A1D10DE8700235F31 /* libRCTContactsWrapper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTContactsWrapper.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B58405C1D10DE8700235F31 /* RCTContactsWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTContactsWrapper.h; sourceTree = "<group>"; };
-		2B58405E1D10DE8700235F31 /* RCTContactsWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTContactsWrapper.m; sourceTree = "<group>"; };
+		2B58405A1D10DE8700235F31 /* libRCTSelectContact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTSelectContact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B58405C1D10DE8700235F31 /* RCTSelectContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTSelectContact.h; sourceTree = "<group>"; };
+		2B58405E1D10DE8700235F31 /* RCTSelectContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTSelectContact.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,19 +41,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B58405B1D10DE8700235F31 /* RCTContactsWrapper */ = {
+		2B58405B1D10DE8700235F31 /* RCTSelectContact */ = {
 			isa = PBXGroup;
 			children = (
-				2B58405C1D10DE8700235F31 /* RCTContactsWrapper.h */,
-				2B58405E1D10DE8700235F31 /* RCTContactsWrapper.m */,
+				2B58405C1D10DE8700235F31 /* RCTSelectContact.h */,
+				2B58405E1D10DE8700235F31 /* RCTSelectContact.m */,
 			);
-			path = RCTContactsWrapper;
+			path = RCTSelectContact;
 			sourceTree = "<group>";
 		};
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				2B58405B1D10DE8700235F31 /* RCTContactsWrapper */,
+				2B58405B1D10DE8700235F31 /* RCTSelectContact */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
 			indentWidth = 2;
@@ -63,7 +63,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2B58405A1D10DE8700235F31 /* libRCTContactsWrapper.a */,
+				2B58405A1D10DE8700235F31 /* libRCTSelectContact.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,9 +71,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2B5840591D10DE8700235F31 /* RCTContactsWrapper */ = {
+		2B5840591D10DE8700235F31 /* RCTSelectContact */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B5840621D10DE8700235F31 /* Build configuration list for PBXNativeTarget "RCTContactsWrapper" */;
+			buildConfigurationList = 2B5840621D10DE8700235F31 /* Build configuration list for PBXNativeTarget "RCTSelectContact" */;
 			buildPhases = (
 				2B5840561D10DE8700235F31 /* Sources */,
 				2B5840571D10DE8700235F31 /* Frameworks */,
@@ -83,9 +83,9 @@
 			);
 			dependencies = (
 			);
-			name = RCTContactsWrapper;
+			name = RCTSelectContact;
 			productName = RCTContactsWrapper;
-			productReference = 2B58405A1D10DE8700235F31 /* libRCTContactsWrapper.a */;
+			productReference = 2B58405A1D10DE8700235F31 /* libRCTSelectContact.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +102,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ContactsWrapper" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SelectContact" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -115,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B5840591D10DE8700235F31 /* RCTContactsWrapper */,
+				2B5840591D10DE8700235F31 /* RCTSelectContact */,
 			);
 		};
 /* End PBXProject section */
@@ -125,7 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B58405F1D10DE8700235F31 /* RCTContactsWrapper.m in Sources */,
+				2B58405F1D10DE8700235F31 /* RCTSelectContact.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +145,8 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../../node_modules/react-native/React",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				OTHER_LDFLAGS = "-ObjC";
@@ -166,6 +168,8 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../../node_modules/react-native/React",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				OTHER_LDFLAGS = "-ObjC";
@@ -263,7 +267,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B5840621D10DE8700235F31 /* Build configuration list for PBXNativeTarget "RCTContactsWrapper" */ = {
+		2B5840621D10DE8700235F31 /* Build configuration list for PBXNativeTarget "RCTSelectContact" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B5840601D10DE8700235F31 /* Debug */,
@@ -272,7 +276,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ContactsWrapper" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SelectContact" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
