@@ -29,5 +29,9 @@
     {
       "name": "Sean Adkinson"
     }
-  ]
+  ],
+  "peerDependencies": {
+    "@yfuks/react-native-action-sheet": "0.0.x",
+    "react-native": "*"
+  }
 }
