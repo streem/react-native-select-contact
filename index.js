@@ -3,7 +3,6 @@
 import {
     NativeModules,
     NativeEventEmitter,
-    ActionSheet,
     Platform
 } from 'react-native';
 import ActionSheet from '@yfuks/react-native-action-sheet';

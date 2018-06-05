@@ -28,7 +28,6 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
     public static final String E_CONTACT_EXCEPTION = "E_CONTACT_EXCEPTION";
     public static final String E_CONTACT_PERMISSION = "E_CONTACT_PERMISSION";
     private Promise mContactsPromise;
-    private Activity mCtx;
     private final ContentResolver contentResolver;
 
     public ContactsWrapper(ReactApplicationContext reactContext) {
@@ -60,9 +59,9 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
             mContactsPromise = contactsPromise;
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType(Contacts.CONTENT_TYPE);
-            mCtx = getCurrentActivity();
-            if (intent.resolveActivity(mCtx.getPackageManager()) != null) {
-                mCtx.startActivityForResult(intent, requestCode);
+            Activity activity = getCurrentActivity();
+            if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                activity.startActivityForResult(intent, requestCode);
             }
             cursor.close();
         } else {
@@ -71,8 +70,8 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, Intent intent) {
-        if (mContactsPromise == null || mCtx == null || requestCode != CONTACT_REQUEST) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
+        if (mContactsPromise == null || requestCode != CONTACT_REQUEST) {
             return;
         }
 
@@ -101,12 +100,12 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
                             break;
 
                         case Phone.CONTENT_ITEM_TYPE:
-                            addPhoneData(contactData, cursor, mCtx);
+                            addPhoneData(contactData, cursor, activity);
                             foundData = true;
                             break;
 
                         case Email.CONTENT_ITEM_TYPE:
-                            addEmailData(contactData, cursor, mCtx);
+                            addEmailData(contactData, cursor, activity);
                             foundData = true;
                             break;
                     }
@@ -198,6 +197,11 @@ public class ContactsWrapper extends ReactContextBaseJavaModule implements Activ
         emailEntry.putString("type", String.valueOf(typeLabel));
 
         emails.pushMap(emailEntry);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+
     }
 
     public static class SelectContactException extends Exception {
