@@ -2,18 +2,18 @@
 
 Originally branched from [react-native-contacts-wrapper](https://github.com/LynxITDigital/react-native-contacts-wrapper)
 
-![alt tag](https://github.com/LynxITDigital/Screenshots/blob/master/RN%20Contacts%20Wrapper%20example.gif)
-
 This is a simple wrapper for the native iOS and Android Contact Picker UIs, with some optional help for selecting specific fields from the contact.
 
-## Installation
+### Installation
 
 ```
 yarn add react-native-select-contact
 ./node_modules/.bin/react-native link react-native-select-contact
 ```
 
-## API
+### API
+
+#### Methods
 
 ```
 selectContact(): Promise<Contact | null>;
@@ -21,7 +21,27 @@ selectContactPhone(): Promise<ContactPhoneSelection | null>;
 selectContactEmail(): Promise<ContactEmailSelection | null>;
 ```
 
-Types:
+These methods all open up a separate ViewController (on IOS) or Activity (on Android) to select a contact.  See Types below.
+
+For `selectContactPhone` or `selectContactEmail`, if there are more than one phone or email, an `ActionSheetIOS` is
+shown for IOS, and the first entry is returned for Android.
+
+A return value `null` may be because the user cancelled the contact selection.  You shouldn't need to worry about doing
+anything if the promise resolves to `null`.
+
+#### Optional Android ActionSheet
+
+You can enable ActionSheet functionality for Android by installing an optional dependency:
+
+```
+yarn add @yfuks/react-native-action-sheet
+./node_modules/.bin/react-native link @yfuks/react-native-action-sheet 
+```
+
+This will provide an `ActionSheetAndroid` native module that this library will pick up on and use
+when there are more than one phone number or email on a selected contact.
+
+#### Types
 
 ```typescript
 interface PhoneEntry {
@@ -51,26 +71,24 @@ interface ContactEmailSelection {
 }
 ```
 
-###Example
+### Example
 
-An example project can be found in this repo: https://github.com/LynxITDigital/react-native-contacts-wrapper-example/tree/master
+```javascript
 
-TODO: Update example:
+import { selectContactPhone } from 'react-native-select-contact';
 
-```
-import ContactsWrapper from 'react-native-contacts-wrapper';
-...
-if (!this.importingContactInfo) {
-  this.importingContactInfo = true;
+function getPhoneNumber() {
+    return selectContactPhone()
+        .then(selection => {
+            if (!selection) {
+                return null;
+            }
+            
+            let { contact, selectedPhone } = selection;
+            console.log(`Selected ${selectedPhone.type} phone number ${selectedPhone.number} from ${contact.name}`);
+            return selectedPhone.number;
+        });  
+}
 
-  ContactsWrapper.getEmail()
-  .then((email) => {
-    this.importingContactInfo = false;
-    console.log("email is", email);
-    })
-    .catch((error) => {
-      this.importingContactInfo = false;
-      console.log("ERROR CODE: ", error.code);
-      console.log("ERROR MESSAGE: ", error.message);
-      });
+
 ```
