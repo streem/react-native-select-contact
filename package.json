@@ -1,6 +1,6 @@
 {
   "name": "react-native-select-contact",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "nativePackage": true,
   "typings": "./selectContact.d.ts",
   "scripts": {
