@@ -19,11 +19,12 @@ yarn add react-native-select-contact
 selectContact(): Promise<Contact | null>;
 selectContactPhone(): Promise<ContactPhoneSelection | null>;
 selectContactEmail(): Promise<ContactEmailSelection | null>;
+selectContactPostalAddress(): Promise<ContactPostalAddressSelection | null>;
 ```
 
 These methods all open up a separate ViewController (on IOS) or Activity (on Android) to select a contact.  See Types below.
 
-For `selectContactPhone` or `selectContactEmail`, if there are more than one phone or email, an `ActionSheetIOS` is
+For `selectContactPhone`, `selectContactEmail`, or `selectContactPostalAddress`, if there are more than one phone or email, an `ActionSheetIOS` is
 shown for IOS, and the first entry is returned for Android.
 
 A return value `null` may be because the user cancelled the contact selection.  You shouldn't need to worry about doing
@@ -54,10 +55,21 @@ interface EmailEntry {
     type: string
 }
 
+interface AddressEntry {
+    formattedAddress: string, // android only
+    type: string, // android only
+    street: string,
+    city: string,
+    state: string,
+    postalCode: string,
+    isoCountryCode: string
+}
+
 interface Contact {
     name: string,
     phones: PhoneEntry[],
-    emails: EmailEntry[]
+    emails: EmailEntry[],
+    postalAddresses: AddressEntry[]
 }
 
 interface ContactPhoneSelection {
@@ -68,6 +80,11 @@ interface ContactPhoneSelection {
 interface ContactEmailSelection {
     contact: Contact,
     selectedEmail: EmailEntry
+}
+
+interface ContactPostalAddressSelection {
+    contact: Contact,
+    selectedAddress: AddressEntry
 }
 ```
 
