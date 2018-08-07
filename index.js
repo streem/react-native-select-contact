@@ -41,6 +41,26 @@ const SelectContactApi = {
             });
     },
 
+    selectContactPostalAddress() {
+      return SelectContactApi.selectContact()
+          .then(contact => {
+              if (!contact) {
+                  return null;
+              }
+
+              let addresses = contact && contact.postalAddresses || [];
+              if (addresses.length === 0) {
+                  Alert.alert('No Postal Addresses', `We could not find any postal addresses for ${contact.name}`);
+                  return null;
+              }
+
+              return selectPostalAddress(addresses)
+                  .then(selectedAddress => {
+                      return selectedAddress ? { contact, selectedAddress } : null;
+                  });
+          })
+    },
+
     selectContactPhone() {
         return SelectContactApi.selectContact()
             .then(contact => {
@@ -111,6 +131,38 @@ function selectPhone(phones) {
                 resolve(phones[buttonIndex]);
             });
     }));
+}
+
+function selectPostalAddress(addresses) {
+  if (addresses.length < 2 || !ActionSheet) {
+    return Promise.resolve(addresses[0]);
+  }
+
+  let options = addresses.map(address => {
+    let { formattedAddress, street, city, state, postalCode, isoCountryCode } = address;
+
+    if (formattedAddress) {
+      return formattedAddress;
+    }
+
+    return `${street} ${city}, ${state} ${postalCode} ${isoCountryCode}`;
+  });
+
+  if (Platform.OS === 'ios') {
+    options.push('Cancel');
+  }
+
+  return new Promise(((resolve) => {
+      ActionSheet.showActionSheetWithOptions({
+              title: 'Select Postal Address',
+              options: options,
+              cancelButtonIndex: options.length - 1,
+              tintColor: 'blue'
+          },
+          (buttonIndex) => {
+              resolve(addresses[buttonIndex]);
+          });
+  }));
 }
 
 function selectEmail(emails) {

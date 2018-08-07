@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
+import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Contacts.Entity;
 import android.util.Log;
@@ -93,6 +94,7 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
 
             WritableArray phones = Arguments.createArray();
             WritableArray emails = Arguments.createArray();
+            WritableArray postalAddresses = Arguments.createArray();
 
             Cursor cursor = openContactQuery(contactUri);
             if (cursor.moveToFirst()) {
@@ -101,6 +103,11 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
                     switch (mime) {
                         case StructuredName.CONTENT_ITEM_TYPE:
                             addNameData(contactData, cursor);
+                            foundData = true;
+                            break;
+
+                        case StructuredPostal.CONTENT_ITEM_TYPE:
+                            addPostalData(postalAddresses, cursor, activity);
                             foundData = true;
                             break;
 
@@ -120,6 +127,7 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
 
             contactData.putArray("phones", phones);
             contactData.putArray("emails", emails);
+            contactData.putArray("postalAddresses", postalAddresses);
 
             if (foundData) {
                 mContactsPromise.resolve(contactData);
@@ -170,6 +178,66 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
     private void addNameData(WritableMap contactData, Cursor cursor) {
         int displayNameIndex = cursor.getColumnIndex(StructuredName.DISPLAY_NAME);
         contactData.putString("name", cursor.getString(displayNameIndex));
+
+        int givenNameColumn = cursor.getColumnIndex(StructuredName.GIVEN_NAME);
+        if (givenNameColumn != -1) {
+            String givenName = cursor.getString(givenNameColumn);
+            contactData.putString("givenName", givenName);
+        }
+
+        int familyNameColumn = cursor.getColumnIndex(StructuredName.FAMILY_NAME);
+        if (familyNameColumn != -1) {
+            String familyName = cursor.getString(cursor.getColumnIndex(StructuredName.FAMILY_NAME));
+            contactData.putString("familyName", familyName);
+        }
+
+        int middleNameColumn = cursor.getColumnIndex(StructuredName.MIDDLE_NAME);
+        if (middleNameColumn != -1) {
+            String middleName = cursor.getString(middleNameColumn);
+            contactData.putString("middleName", middleName);
+        }
+    }
+
+    private void addPostalData(WritableArray postalAddresses, Cursor cursor, Activity activity) {
+        // we need to see if the postal address columns exist, if so, add them
+        int formattedAddressColumn = cursor.getColumnIndex(StructuredPostal.FORMATTED_ADDRESS);
+        int streetColumn = cursor.getColumnIndex(StructuredPostal.STREET);
+        int cityColumn = cursor.getColumnIndex(StructuredPostal.CITY);
+        int stateColumn = cursor.getColumnIndex(StructuredPostal.REGION);
+        int postalCodeColumn = cursor.getColumnIndex(StructuredPostal.POSTCODE);
+        int isoCountryCodeColumn = cursor.getColumnIndex(StructuredPostal.COUNTRY);
+
+        WritableMap addressEntry = Arguments.createMap();
+        if (formattedAddressColumn != -1) {
+            addressEntry.putString("formattedAddress", cursor.getString(formattedAddressColumn));
+        }
+        if (streetColumn != -1) {
+            addressEntry.putString("street", cursor.getString(streetColumn));
+        }
+        if (cityColumn != -1) {
+            addressEntry.putString("city", cursor.getString(cityColumn));
+        }
+        if (stateColumn != -1) {
+            addressEntry.putString("state", cursor.getString(stateColumn));
+        }
+        if (postalCodeColumn != -1) {
+            addressEntry.putString("postalCode", cursor.getString(postalCodeColumn));
+        }
+        if (isoCountryCodeColumn != -1) {
+            addressEntry.putString("isoCountryCode", cursor.getString(isoCountryCodeColumn));
+        }
+
+        // add the address type here
+        int addressTypeColumn = cursor.getColumnIndex(StructuredPostal.TYPE);
+        int addressLabelColumn = cursor.getColumnIndex(StructuredPostal.LABEL);
+        if (addressTypeColumn != -1 && addressLabelColumn != -1) {
+            String addressLabel = cursor.getString(addressLabelColumn);
+            int addressType = cursor.getInt(addressTypeColumn);
+            CharSequence typeLabel = StructuredPostal.getTypeLabel(activity.getResources(), addressType, addressLabel);
+            addressEntry.putString("type", String.valueOf(typeLabel));
+        }
+
+        postalAddresses.pushMap(addressEntry);
     }
 
     private void addPhoneEntry(WritableArray phones, Cursor cursor, Activity activity) {
