@@ -1,3 +1,7 @@
+### 1.1.1
+
+* Updated typescript typings with postal address fields
+
 ### 1.1.0
 
 * Returning postal address data with contact's now
