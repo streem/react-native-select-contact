@@ -1,8 +1,8 @@
 
-export function selectContact(): Promise<Contact | null>;
-export function selectContactPhone(): Promise<ContactPhoneSelection | null>;
-export function selectContactEmail(): Promise<ContactEmailSelection | null>;
-export function selectContactPostalAddress(): Promise<ContactPostalAddressSelection | null>;
+export function selectContact(textOptions? : TextOptions): Promise<Contact | null>;
+export function selectContactPhone(textOptions? : TextOptions): Promise<ContactPhoneSelection | null>;
+export function selectContactEmail(textOptions? : TextOptions): Promise<ContactEmailSelection | null>;
+export function selectContactPostalAddress(textOptions? : TextOptions): Promise<ContactPostalAddressSelection | null>;
 
 export interface PhoneEntry {
     number: string,
@@ -44,4 +44,18 @@ export interface ContactEmailSelection {
 export interface ContactPostalAddressSelection {
     contact: Contact,
     selectedAddress: AddressEntry
+}
+
+export interface TextOptions {
+    cancel: String, 
+    selectPhone: String, 
+    selectPostalAddress: String,
+    selectEmail: String,
+    errorNoPhoneNumbersTitle: String, 
+    errorNoPhoneNumbersBody: String,
+    errorNoAddressTitle: String,
+    errorNoAddressBody: String,
+    errorNoEmailTitle: String,
+    errorNoEmailBody: String,
+    errorOpenTwice: String,
 }
