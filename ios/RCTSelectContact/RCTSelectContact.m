@@ -51,6 +51,7 @@ RCT_EXPORT_METHOD(openContactSelection:(RCTPromiseResolveBlock)resolve rejecter:
    */
   NSMutableDictionary *contactData = [self emptyContactDict];
   
+  [contactData setValue:contact.identifier forKey:@"recordId"];
   //Return name
   NSString *fullName = [self getFullNameForFirst:contact.givenName middle:contact.middleName last:contact.familyName ];
   [contactData setValue:fullName forKey:@"name"];
