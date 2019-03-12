@@ -1,3 +1,7 @@
+### 1.2.0
+
+* Add `recordId` to contacts [#5]
+
 ### 1.1.1
 
 * Updated typescript typings with postal address fields
