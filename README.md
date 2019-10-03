@@ -11,6 +11,11 @@ yarn add react-native-select-contact
 ./node_modules/.bin/react-native link react-native-select-contact
 ```
 
+Make sure your manifest files includes permission to read contacts
+```
+<uses-permission android:name="android.permission.READ_CONTACTS" />
+```
+
 ### API
 
 #### Methods
