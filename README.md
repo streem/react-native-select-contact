@@ -8,7 +8,11 @@ This is a simple wrapper for the native iOS and Android Contact Picker UIs, with
 
 ```
 yarn add react-native-select-contact
-./node_modules/.bin/react-native link react-native-select-contact
+```
+
+For React Native => 0.59 only:
+```
+react-native link react-native-select-contact
 ```
 
 ### API
