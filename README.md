@@ -44,8 +44,12 @@ anything if the promise resolves to `null`.
 You can enable ActionSheet functionality for Android by installing an optional dependency:
 
 ```
-yarn add @yfuks/react-native-action-sheet
-./node_modules/.bin/react-native link @yfuks/react-native-action-sheet 
+yarn add react-native-action-sheet
+```
+
+For React Native => 0.59 only:
+```
+react-native link react-native-action-sheet
 ```
 
 This will provide an `ActionSheetAndroid` native module that this library will pick up on and use
