@@ -1,3 +1,11 @@
+### 1.3.0
+
+* Loosen react-native version restriction to >= 0.51
+* Update `react-native-action-sheet` dependency
+* Updated `mixin-deep` dependency
+* Android warnings fixes
+* Instructions updates
+
 ### 1.2.1
 
 * Add Podfile for RN 0.60+
