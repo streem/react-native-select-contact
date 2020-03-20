@@ -1,3 +1,6 @@
+### 1.3.1
+* Using picker from main thread [#23]
+
 ### 1.3.0
 
 * Loosen react-native version restriction to >= 0.51
