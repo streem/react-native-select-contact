@@ -41,7 +41,7 @@ RCT_EXPORT_METHOD(openContactSelection:(RCTPromiseResolveBlock)resolve rejecter:
   }
 }
 
-- (NSMutableDictionary *) emptyContactDict {
+- (NSMutableDictionary *)emptyContactDict {
   NSMutableArray *phones = [[NSMutableArray alloc] init];
   NSMutableArray *emails = [[NSMutableArray alloc] init];
   NSMutableArray *addresses = [[NSMutableArray alloc] init];
