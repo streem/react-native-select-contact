@@ -20,13 +20,19 @@ RCT_EXPORT_MODULE(SelectContact);
 RCT_EXPORT_METHOD(openContactSelection:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
   self._resolve = resolve;
   self._reject = reject;
-  
-  UIViewController *picker = [[CNContactPickerViewController alloc] init];
-  ((CNContactPickerViewController *)picker).delegate = self;
-  
+
+  [NSOperationQueue.mainQueue addOperationWithBlock:^{
+    presentContactPicker();
+  }]
+}
+
+- (void)presentContactPicker {
+  CNContactPickerViewController *picker = [[CNContactPickerViewController alloc] init];
+  picker.delegate = self;
+
   // Launch Contact Picker
   UIViewController *root = [[[UIApplication sharedApplication] delegate] window].rootViewController;
-  BOOL modalPresent = (BOOL) (root.presentedViewController);
+  BOOL modalPresent = (root.presentedViewController != nil);
   if (modalPresent) {
     UIViewController *parent = root.presentedViewController;
     [parent presentViewController:picker animated:YES completion:nil];
@@ -35,7 +41,7 @@ RCT_EXPORT_METHOD(openContactSelection:(RCTPromiseResolveBlock)resolve rejecter:
   }
 }
 
-- (NSMutableDictionary *) emptyContactDict {
+- (NSMutableDictionary *)emptyContactDict {
   NSMutableArray *phones = [[NSMutableArray alloc] init];
   NSMutableArray *emails = [[NSMutableArray alloc] init];
   NSMutableArray *addresses = [[NSMutableArray alloc] init];
