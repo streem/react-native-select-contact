@@ -1,3 +1,6 @@
+### 1.3.2
+* Revert 1.3.1, picker on main thread... IOS build issues [#24]
+
 ### 1.3.1
 * Using picker from main thread [#23]
 
