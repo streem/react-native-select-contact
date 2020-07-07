@@ -26,13 +26,10 @@ RCT_EXPORT_METHOD(openContactSelection:(RCTPromiseResolveBlock)resolve rejecter:
   
   // Launch Contact Picker
   UIViewController *root = [[[UIApplication sharedApplication] delegate] window].rootViewController;
-  BOOL modalPresent = (BOOL) (root.presentedViewController);
-  if (modalPresent) {
-    UIViewController *parent = root.presentedViewController;
-    [parent presentViewController:picker animated:YES completion:nil];
-  } else {
-    [root presentViewController:picker animated:YES completion:nil];
+  while(root.presentedViewController) {
+    root = root.presentedViewController;
   }
+  [root presentViewController:picker animated:YES completion:nil];
 }
 
 - (NSMutableDictionary *) emptyContactDict {
