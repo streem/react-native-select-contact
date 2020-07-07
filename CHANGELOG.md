@@ -1,3 +1,6 @@
+### 1.5.0
+* Support for RN 0.62 [#27] [#29]
+
 ### 1.4.0
 * Multi-layer Modals [#30]
 
