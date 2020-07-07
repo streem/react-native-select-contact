@@ -1,3 +1,6 @@
+### 1.4.0
+* Multi-layer Modals [#30]
+
 ### 1.3.2
 * Revert 1.3.1, picker on main thread... IOS build issues [#24]
 
