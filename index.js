@@ -125,7 +125,6 @@ function selectPhone(phones) {
                 title: 'Select Phone',
                 options: options,
                 cancelButtonIndex: options.length - 1,
-                tintColor: 'blue'
             },
             (buttonIndex) => {
                 resolve(phones[buttonIndex]);
@@ -157,7 +156,6 @@ function selectPostalAddress(addresses) {
               title: 'Select Postal Address',
               options: options,
               cancelButtonIndex: options.length - 1,
-              tintColor: 'blue'
           },
           (buttonIndex) => {
               resolve(addresses[buttonIndex]);
@@ -184,7 +182,6 @@ function selectEmail(emails) {
                 title: 'Select Email',
                 options: options,
                 cancelButtonIndex: options.length - 1,
-                tintColor: 'blue'
             },
             (buttonIndex) => {
                 resolve(emails[buttonIndex]);
