@@ -1,7 +1,7 @@
 {
   "name": "react-native-select-contact",
   "summary": "A react native company to select a contact from your phone's contact list",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "nativePackage": true,
   "typings": "./selectContact.d.ts",
   "scripts": {
