@@ -1,4 +1,7 @@
-### 1.6.1.
+### 1.6.2
+* Actually fix podspec [#44]
+
+### 1.6.1
 * Fix podspec by adding a "summary" to `package.json` [#44]
 
 ### 1.6.0
