@@ -1,3 +1,6 @@
+### 1.6.1.
+* Fix podspec by adding a "summary" to `package.json` [#44]
+
 ### 1.6.0
 * Various dependency updates from SecurityBot [#37] [#39] [#40] [#41] 
 * Remove `tintColor: blue`, so that iOS light/dark mode behave better [#43]
