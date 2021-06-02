@@ -1,3 +1,8 @@
+### 1.5.0
+* Various dependency updates from SecurityBot [#37] [#39] [#40] [#41] 
+* Remove `tintColor: blue`, so that iOS light/dark mode behave better [#43]
+* Fix possible NPE on Android [#35]
+
 ### 1.4.0
 * Multi-layer Modals [#30]
 
