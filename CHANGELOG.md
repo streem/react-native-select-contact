@@ -1,3 +1,6 @@
+### 1.6.3
+* Fix iOS source files [#45]
+
 ### 1.6.2
 * Actually fix podspec [#44]
 
