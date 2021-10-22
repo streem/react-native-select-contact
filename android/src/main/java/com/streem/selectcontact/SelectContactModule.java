@@ -57,9 +57,10 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
      * @param requestCode     - request code to specify what contact data to return
      */
     private void launchPicker(Promise contactsPromise, int requestCode) {
+        mContactsPromise = contactsPromise;
         Cursor cursor = this.contentResolver.query(Contacts.CONTENT_URI, null, null, null, null);
+        
         if (cursor != null) {
-            mContactsPromise = contactsPromise;
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType(Contacts.CONTENT_TYPE);
             Activity activity = getCurrentActivity();
@@ -89,6 +90,7 @@ public class SelectContactModule extends ReactContextBaseJavaModule implements A
 
         try {
             String id = getContactId(intent.getData());
+            contactData.putString("recordId", id);
             Uri contactUri = buildContactUri(id);
             boolean foundData = false;
 
