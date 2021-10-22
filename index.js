@@ -13,13 +13,27 @@ const ActionSheet = Platform.select({
     android: ActionSheetAndroid
 });
 
+const DEFAULT_TEXT_OPTIONS = {
+    cancel: "Cancel", 
+    selectPhone: "Select Phone", 
+    selectPostalAddress: "Select Postal Address",
+    selectEmail: "Select Email",
+    errorNoPhoneNumbersTitle: "No Phone Numbers", 
+    errorNoPhoneNumbersBody: "We could not find any phone numbers for ",
+    errorNoAddressTitle: "No Postal Addresses",
+    errorNoAddressBody: "We could not find any postal addresses for ",
+    errorNoEmailTitle: "No Email Addresses",
+    errorNoEmailBody: "We could not find any email addresses for ",
+    errorOpenTwice: "Cannot open the contact selector twice",
+}
+
 let currentlyOpen = false;
 
 const SelectContactApi = {
 
-    selectContact() {
+    selectContact(textOptions=DEFAULT_TEXT_OPTIONS) {
         if (currentlyOpen) {
-            return Promise.reject(new Error('Cannot open the contact selector twice'));
+            return Promise.reject(new Error(textOptions.errorOpenTwice));
         }
 
         currentlyOpen = true;
@@ -41,8 +55,8 @@ const SelectContactApi = {
             });
     },
 
-    selectContactPostalAddress() {
-      return SelectContactApi.selectContact()
+    selectContactPostalAddress(textOptions=DEFAULT_TEXT_OPTIONS) {
+      return SelectContactApi.selectContact(textOptions)
           .then(contact => {
               if (!contact) {
                   return null;
@@ -50,7 +64,7 @@ const SelectContactApi = {
 
               let addresses = contact && contact.postalAddresses || [];
               if (addresses.length === 0) {
-                  Alert.alert('No Postal Addresses', `We could not find any postal addresses for ${contact.name}`);
+                  Alert.alert(textOptions.errorNoAddressTitle, `${textOptions.errorNoAddressBody}${contact.name}`);
                   return null;
               }
 
@@ -61,8 +75,8 @@ const SelectContactApi = {
           })
     },
 
-    selectContactPhone() {
-        return SelectContactApi.selectContact()
+    selectContactPhone(textOptions=DEFAULT_TEXT_OPTIONS) {
+        return SelectContactApi.selectContact(textOptions)
             .then(contact => {
                 if (!contact) {
                     return null;
@@ -70,19 +84,19 @@ const SelectContactApi = {
 
                 let phones = contact && contact.phones || [];
                 if (phones.length === 0) {
-                    Alert.alert('No Phone Numbers', `We could not find any phone numbers for ${contact.name}`);
+                    Alert.alert(textOptions.errorNoPhoneNumbersTitle, `${textOptions.errorNoPhoneNumbersBody}${contact.name}`);
                     return null;
                 }
 
-                return selectPhone(phones)
+                return selectPhone(phones, textOptions)
                     .then(selectedPhone => {
                         return selectedPhone ? { contact, selectedPhone } : null;
                     });
             });
     },
 
-    selectContactEmail() {
-        return SelectContactApi.selectContact()
+    selectContactEmail(textOptions=DEFAULT_TEXT_OPTIONS) {
+        return SelectContactApi.selectContact(textOptions)
             .then(contact => {
                 if (!contact) {
                     return null;
@@ -90,7 +104,7 @@ const SelectContactApi = {
 
                 let emails = contact && contact.emails || [];
                 if (emails.length === 0) {
-                    Alert.alert('No Email Addresses', `We could not find any email addresses for ${contact.name}`);
+                    Alert.alert(textOptions.errorNoEmailTitle, `${textOptions.errorNoEmailBody}${contact.name}`);
                     return null;
                 }
 
@@ -106,7 +120,7 @@ const SelectContactApi = {
 module.exports = SelectContactApi;
 
 
-function selectPhone(phones) {
+function selectPhone(phones, textOptions) {
     if (phones.length < 2 || !ActionSheet) {
         return Promise.resolve(phones[0]);
     }
@@ -117,12 +131,12 @@ function selectPhone(phones) {
     });
 
     if (Platform.OS === 'ios') {
-        options.push('Cancel');
+        options.push(textOptions.cancel);
     }
 
     return new Promise(((resolve) => {
         ActionSheet.showActionSheetWithOptions({
-                title: 'Select Phone',
+                title: textOptions.selectPhone,
                 options: options,
                 cancelButtonIndex: options.length - 1,
             },
@@ -132,7 +146,7 @@ function selectPhone(phones) {
     }));
 }
 
-function selectPostalAddress(addresses) {
+function selectPostalAddress(addresses, textOptions) {
   if (addresses.length < 2 || !ActionSheet) {
     return Promise.resolve(addresses[0]);
   }
@@ -148,12 +162,12 @@ function selectPostalAddress(addresses) {
   });
 
   if (Platform.OS === 'ios') {
-    options.push('Cancel');
+    options.push(textOptions.cancel);
   }
 
   return new Promise(((resolve) => {
       ActionSheet.showActionSheetWithOptions({
-              title: 'Select Postal Address',
+              title: textOptions.selectPostalAddress,
               options: options,
               cancelButtonIndex: options.length - 1,
           },
@@ -174,12 +188,12 @@ function selectEmail(emails) {
     });
 
     if (Platform.OS === 'ios') {
-        options.push('Cancel');
+        options.push(textOptions.cancel);
     }
 
     return new Promise(((resolve) => {
         ActionSheet.showActionSheetWithOptions({
-                title: 'Select Email',
+                title: textOptions.selectEmail,
                 options: options,
                 cancelButtonIndex: options.length - 1,
             },
