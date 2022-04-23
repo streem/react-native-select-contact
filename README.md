@@ -15,16 +15,30 @@ For React Native => 0.59 only:
 react-native link react-native-select-contact
 ```
 
-Make sure your manifest files includes permission to read contacts
-```
-<uses-permission android:name="android.permission.READ_CONTACTS" />
+For Android support, make sure your manifest file includes permission to read contacts along with a query intent for Android 11+:
+```xml
+<manifest>
+    <!-- Add this for overall Android support -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <application>
+        ...
+    </application>
+    <!-- Also add this for Android 11+ support -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+    </queries>
+</manifest>
 ```
 
 ### API
 
 #### Methods
 
-```
+```javascript
 selectContact(): Promise<Contact | null>;
 selectContactPhone(): Promise<ContactPhoneSelection | null>;
 selectContactEmail(): Promise<ContactEmailSelection | null>;
