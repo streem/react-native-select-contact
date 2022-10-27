@@ -9,12 +9,17 @@ This is a simple wrapper for the native iOS and Android Contact Picker UIs, with
 ```
 yarn add react-native-select-contact
 ```
+or with NPM
+```
+npm install react-native-select-contact
+```
 
 For React Native => 0.59 only:
 ```
 react-native link react-native-select-contact
 ```
 
+#### Android
 For Android support, make sure your manifest file includes permission to read contacts along with a query intent for Android 11+:
 ```xml
 <manifest>
@@ -32,6 +37,23 @@ For Android support, make sure your manifest file includes permission to read co
         </intent>
     </queries>
 </manifest>
+```
+Also, in addition to declaring `READ_CONTACTS` permission in `AndroidManifest.xml`, you also need to explicitly request for the permission at runtime. So make sure `READ_CONTACT` permission is granted at runtime before calling API method(s).
+
+#### iOS
+For iOS support, make sure to include usage description for contacts in your `Info.plist` file
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    ...
+	<key>NSContactsUsageDescription</key>
+	<string>THis app uses your contacts to....</string>
+    ...
+</dict>
+</plist>
+
 ```
 
 ### API
@@ -120,18 +142,32 @@ interface ContactPostalAddressSelection {
 ```javascript
 
 import { selectContactPhone } from 'react-native-select-contact';
+import { PermissionsAndroid, Platform } from 'react-native';
 
-function getPhoneNumber() {
-    return selectContactPhone()
-        .then(selection => {
-            if (!selection) {
-                return null;
-            }
+async function getPhoneNumber() {
+    // on android we need to explicitly request for contacts permission and make sure it's granted
+    // before calling API methods
+    if (Platform.OS === 'android') {
+      const request = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      );
+
+      // denied permission
+      if (request === PermissionsAndroid.RESULTS.DENIED) throw Error("Permission Denied");
+      
+      // user chose 'deny, don't ask again'
+      else if (request === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) throw Error("Permission Denied");
+    }
+    
+    // Here we are sure permission is granted for android or that platform is not android
+    const selection = await selectContactPhone();
+    if (!selection) {
+        return null;
+    }
             
-            let { contact, selectedPhone } = selection;
-            console.log(`Selected ${selectedPhone.type} phone number ${selectedPhone.number} from ${contact.name}`);
-            return selectedPhone.number;
-        });  
+    let { contact, selectedPhone } = selection;
+    console.log(`Selected ${selectedPhone.type} phone number ${selectedPhone.number} from ${contact.name}`);
+    return selectedPhone.number;
 }
 
 
