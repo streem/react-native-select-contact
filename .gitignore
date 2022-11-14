@@ -32,3 +32,5 @@ node_modules
 *.iml
 .DS_Store
 build/
+bin
+obj
