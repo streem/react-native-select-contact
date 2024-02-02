@@ -88,7 +88,9 @@ const SelectContactApi = {
                     return null;
                 }
 
-                return selectPhone(phones, textOptions)
+                const uniquePhones =  [...new Map(phones.map(phone => [phone.number.replace(/ /g,''), phone])).values()]
+        
+                return selectPhone(uniquePhones, textOptions)
                     .then(selectedPhone => {
                         return selectedPhone ? { contact, selectedPhone } : null;
                     });
