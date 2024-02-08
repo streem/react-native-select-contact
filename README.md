@@ -19,6 +19,24 @@ For React Native => 0.59 only:
 react-native link react-native-select-contact
 ```
 
+### Expo Usage
+since this package use NativeModules you need to 
+migrate to development build. more info [here](https://docs.expo.dev/develop/development-builds/create-a-build/)
+
+add `react-native-select-contact` to the plugin array in your `app.json`
+
+```json
+{
+  "expo": {
+    ...
+    "plugins": [
+      ...
+      "react-native-select-contact"
+    ]
+  }
+}
+```
+
 #### Android
 For Android support, make sure your manifest file includes permission to read contacts along with a query intent for Android 11+:
 ```xml
